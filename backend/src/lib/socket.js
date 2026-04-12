@@ -9,6 +9,7 @@ const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
     origin: "https://chatapplication-wine.vercel.app",
+    credentials:true
   }
 });
 
