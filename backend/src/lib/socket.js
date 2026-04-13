@@ -5,12 +5,15 @@ import express from "express";
 
 const app = express();
 const server = http.createServer(app);
+const FRONTEND_URL = process.env.FRONTEND_URL || "https://chatapplication-wine.vercel.app";
 
 const io = new Server(server, {
   cors: {
-    origin: "https://chatapplication-wine.vercel.app",
-    credentials:true
-  }
+    origin: FRONTEND_URL,
+    credentials: true,
+    methods: ["GET", "POST"]
+  },
+  transports: ["websocket", "polling"]
 });
 
 export function getReceiverSocketId(userId) {

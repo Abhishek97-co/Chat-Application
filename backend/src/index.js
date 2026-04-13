@@ -9,13 +9,14 @@ dotenv.config();
 import { connectDB } from "./lib/db.js";
 import { app, server } from "./lib/socket.js";
 
-const PORT = process.env.PORT ;
+const PORT = process.env.PORT || 5001;
+const FRONTEND_URL = process.env.FRONTEND_URL || "https://chatapplication-wine.vercel.app";
 
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ limit: "10mb", extended: true }));
 app.use(cookieParser());
 app.use(cors({
-  origin: "https://chatapplication-wine.vercel.app",
+  origin: FRONTEND_URL,
   credentials: true
 }));
 
