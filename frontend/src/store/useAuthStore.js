@@ -1,4 +1,3 @@
-
 import { create } from "zustand";
 import { axiosInstance } from "../lib/axios.js";
 import toast from "react-hot-toast";
@@ -87,10 +86,11 @@ export const useAuthStore = create((set, get) => ({
     const { authUser } = get();
     if (!authUser || get().socket?.connected) return;
 
-    const socket = io(BASE_URL, {
+    const socket = io(import.meta.env.VITE_SOCKET_URL || "http://localhost:5001", {
       query: {
         userId: authUser._id,
       },
+      withCredentials: true,
     });
     socket.connect();
 
