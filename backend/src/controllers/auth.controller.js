@@ -26,22 +26,19 @@ export const signup = async (req,res) =>{
             email,
             password: hashedPassword,
         });
-        if(newUser){
-            generateToken(newUser._id,res);
-            await newUser.save();
-            res.status(201).json({
-                _id: newUser._id,
-                fullName:newUser.fullName,
-                email: newUser.email,
-                profilePic: newUser.profilePic,
-                createdAt: newUser.createdAt,
-            });
-        } else {
-            res.status(400).json({ message:"Invalid user data"})
-        }
+        await newUser.save();
+        generateToken(newUser._id, res);
+        res.status(201).json({
+            _id: newUser._id,
+            fullName: newUser.fullName,
+            email: newUser.email,
+            profilePic: newUser.profilePic,
+            createdAt: newUser.createdAt,
+        });
    } catch(error){
         console.log("Error in signup controller ",error.message);
-        res.status(500).json({message: " Internal Server Error"});
+        const message = process.env.NODE_ENV === "production" ? "Internal Server Error" : error.message;
+        res.status(500).json({message});
    }
 };
 export const login = async (req,res) =>{
@@ -65,8 +62,9 @@ export const login = async (req,res) =>{
             });
 
     } catch(error){
-         console.log("Error in signup controller ",error.message);
-        res.status(500).json({message: " Internal Server Error"});
+         console.log("Error in login controller ",error.message);
+         const message = process.env.NODE_ENV === "production" ? "Internal Server Error" : error.message;
+        res.status(500).json({message});
     }
 };
 export const logout = (req,res) =>{
